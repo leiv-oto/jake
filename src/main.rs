@@ -16,15 +16,16 @@ enum Lang {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Crea un nuevo proyecto especificando el lenguaje y el nombre
+    /// Create a new project
     New {
-        #[arg(value_enum)]
-        ttype: Lang,
-
-        /// Nombre del proyecto
+        /// Project name
         name: String,
+
+        /// Target language
+        #[arg(short, long, value_enum, default_value_t = Lang::Kotlin)]
+        lang: Lang,
     },
-    /// Ejecuta el proyecto actual
+    /// Run the current project
     Run {},
 }
 
@@ -32,11 +33,11 @@ fn main() {
     let cli = Cli::parse();
 
     match &cli.command {
-        Commands::New { ttype, name } => {
-            println!("Creando {} en {:?}", name, ttype);
+        Commands::New { name, lang } => {
+            println!("Creating {} in {:?}", name, lang);
         }
         Commands::Run {} => {
-            println!("Ejecutando proyecto...");
+            println!("Lol, this thing still isn't ready. GYU");
         }
     }
 }
