@@ -37,7 +37,7 @@ fn main() {
             println!("Creating {} in {:?}", name, lang);
         }
         Commands::Run {} => {
-            println!("Lol, this thing still isn't ready. GYU");
+            println!("Lol, this thing still isn't ready. GYU 🦭");
         }
     }
 }
