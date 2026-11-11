@@ -1,3 +1,6 @@
+mod creation;
+use creation::creation;
+
 use clap::{Parser, Subcommand, ValueEnum};
 
 #[derive(Parser)]
@@ -34,7 +37,7 @@ fn main() {
 
     match &cli.command {
         Commands::New { name, lang } => {
-            println!("Creating {} in {:?}", name, lang);
+            creation(name, lang.to_possible_value().unwrap().get_name());
         }
         Commands::Run {} => {
             println!("Lol, this thing still isn't ready. GYU 🦭");
