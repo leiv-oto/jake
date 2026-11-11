@@ -31,14 +31,15 @@ enum Commands {
     Run {},
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
     match cli.command {
         Commands::New { name, lang, mixed } => {
-            creation(&name, lang, mixed);
+            creation(&name, lang, mixed)?;
         }
         Commands::Run {} => {
             println!("Lol, this thing still isn't ready. GYU 🦭");
         }
     }
+    Ok(())
 }

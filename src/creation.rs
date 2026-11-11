@@ -1,7 +1,7 @@
 use std::fs;
 use std::path::Path;
-use std::process;
 use clap::ValueEnum;
+use std::io::Write;
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
 pub enum Lang {
@@ -9,27 +9,21 @@ pub enum Lang {
     Java,
 }
 
-pub fn creation(name: &str, lang: Lang, mixed: bool) {
+pub fn creation(name: &str, lang: Lang, mixed: bool) -> Result<(), Box<dyn std::error::Error>> {
     println!("Creating {} in {:?}{}", name, lang, if mixed {" (mixed)"} else {""});
-
     let base_path = Path::new(name);
     let src_path = base_path.join("src");
-
+    let toml_path = base_path.join("Jake.toml");
+    fs::write(&toml_path, "[package]\n")?;
+    let mut tomlfile = fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(&toml_path)?;
+    writeln!(tomlfile, "name = \"{}\"", name)?;
+    writeln!(tomlfile, "version = \"{}\"", "0.0.0")?;
     if mixed {
-        let kt_dir = src_path.join("kotlin");
-        let java_dir = src_path.join("java");
-
-        if let Err(e) = fs::create_dir_all(&kt_dir) {
-            eprintln!("Cannot create directory {}: {}", kt_dir.display(), e);
-            process::exit(1);
-        }
-        if let Err(e) = fs::create_dir_all(&java_dir) {
-            eprintln!("Cannot create directory {}: {}", java_dir.display(), e);
-            process::exit(1);
-        }
-
-
     } else {
 
     }
+    Ok(())
 }
