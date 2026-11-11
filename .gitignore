@@ -3,6 +3,7 @@
 debug/
 *.pdb
 **/*.rs.bk
+/test
 
 # Pruebas y diagnósticos de rustc
 **/mutants.out*/

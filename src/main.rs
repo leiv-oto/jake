@@ -34,7 +34,6 @@ enum Commands {
 
 fn main() {
     let cli = Cli::parse();
-
     match &cli.command {
         Commands::New { name, lang } => {
             creation(name, lang.to_possible_value().unwrap().get_name());
