@@ -9,37 +9,27 @@ pub enum Lang {
     Java,
 }
 
-pub fn creation(name: &str, lang: Lang) {
-    println!("Creating {} in {:?}", name, lang);
+pub fn creation(name: &str, lang: Lang, mixed: bool) {
+    println!("Creating {} in {:?}{}", name, lang, if mixed {" (mixed)"} else {""});
 
     let base_path = Path::new(name);
     let src_path = base_path.join("src");
 
-    if let Err(e) = fs::create_dir_all(&src_path) {
-        eprintln!("Cannot create directory {}: {}", src_path.display(), e);
-        process::exit(1);
-    }
+    if mixed {
+        let kt_dir = src_path.join("kotlin");
+        let java_dir = src_path.join("java");
 
-    let (ext, boilerplate) = match lang {
-        Lang::Java => (
-            "java",
-            "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello from Jake!\");\n    }\n}\n",
-        ),
-        Lang::Kotlin => (
-            "kt",
-            "fun main(args: Array<String>) {\n    println(\"Hello from Jake!\")\n}\n",
-        ),
-    };
+        if let Err(e) = fs::create_dir_all(&kt_dir) {
+            eprintln!("Cannot create directory {}: {}", kt_dir.display(), e);
+            process::exit(1);
+        }
+        if let Err(e) = fs::create_dir_all(&java_dir) {
+            eprintln!("Cannot create directory {}: {}", java_dir.display(), e);
+            process::exit(1);
+        }
 
-    let toml_path = base_path.join("Jake.toml");
-    let content = format!("[project]\nname = \"{}\"\nversion = \"0.0.0\"\nentry = \"Main.{}\"", name, ext);
-    if let Err(e) = fs::write(&toml_path, content) {
-        eprintln!("Cannot create file {}: {}", toml_path.display(), e);
-        process::exit(1);
-    }
-    let main_file = src_path.join(format!("Main.{}", ext));
-    if let Err(e) = fs::write(&main_file, boilerplate) {
-        eprintln!("Cannot create file {}: {}", main_file.display(), e);
-        process::exit(1);
+
+    } else {
+
     }
 }

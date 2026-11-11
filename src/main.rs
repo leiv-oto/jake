@@ -22,6 +22,10 @@ enum Commands {
         /// Target language
         #[arg(short, long, value_enum, default_value_t = Lang::Kotlin)]
         lang: Lang,
+
+        /// Set up a mixed Java/Kotlin structure
+        #[arg(short, long)]
+        mixed: bool,
     },
     /// Run the current project
     Run {},
@@ -30,8 +34,8 @@ enum Commands {
 fn main() {
     let cli = Cli::parse();
     match cli.command {
-        Commands::New { name, lang } => {
-            creation(&name, lang);
+        Commands::New { name, lang, mixed } => {
+            creation(&name, lang, mixed);
         }
         Commands::Run {} => {
             println!("Lol, this thing still isn't ready. GYU 🦭");
