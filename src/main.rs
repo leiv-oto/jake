@@ -1,7 +1,7 @@
 mod creation;
-use creation::creation;
+use creation::{creation, Lang};
 
-use clap::{Parser, Subcommand, ValueEnum};
+use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(name = "jake")]
@@ -11,11 +11,6 @@ struct Cli {
     command: Commands,
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
-enum Lang {
-    Kotlin,
-    Java,
-}
 
 #[derive(Subcommand)]
 enum Commands {
@@ -34,9 +29,9 @@ enum Commands {
 
 fn main() {
     let cli = Cli::parse();
-    match &cli.command {
+    match cli.command {
         Commands::New { name, lang } => {
-            creation(name, lang.to_possible_value().unwrap().get_name());
+            creation(&name, lang);
         }
         Commands::Run {} => {
             println!("Lol, this thing still isn't ready. GYU 🦭");
